@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.drselump14.import_clipboard_to_1password</string>
+	<key>category</key>
+	<string>Productivity</string>
+	<key>connections</key>
+	<dict>
+		<key>14AA4D33-79C7-4A48-8B95-2B8647178784</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>D65F2AA0-D75C-4795-A160-7235BDAC21BD</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>254D6031-4013-410D-B57B-10A18B86441E</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>14AA4D33-79C7-4A48-8B95-2B8647178784</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>72905DC5-48E4-4340-BBAA-34A5454012FC</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>8B763859-4D80-4A1F-B57D-B45A96400401</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>8B763859-4D80-4A1F-B57D-B45A96400401</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>D65F2AA0-D75C-4795-A160-7235BDAC21BD</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>BC665E28-E5EC-4B35-AE7A-12C8D0DCDEDF</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>14AA4D33-79C7-4A48-8B95-2B8647178784</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>C153D648-52A7-4728-92DA-A04F80214D2C</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>14AA4D33-79C7-4A48-8B95-2B8647178784</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>drselump14</string>
+	<key>description</key>
+	<string></string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Import clipboard to 1password</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>availableviaurlhandler</key>
+				<false/>
+				<key>triggerid</key>
+				<string>save_to_1password</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.external</string>
+			<key>uid</key>
+			<string>254D6031-4013-410D-B57B-10A18B86441E</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>acceptsfiles</key>
+				<false/>
+				<key>acceptsmulti</key>
+				<integer>0</integer>
+				<key>acceptstext</key>
+				<true/>
+				<key>acceptsurls</key>
+				<false/>
+				<key>name</key>
+				<string>Save to 1Password &amp; Delete</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.universalaction</string>
+			<key>uid</key>
+			<string>C153D648-52A7-4728-92DA-A04F80214D2C</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<true/>
+				<key>removeextension</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>1Password Import</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>D65F2AA0-D75C-4795-A160-7235BDAC21BD</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+SECRET_TEXT="$1"
+
+if [ -z "$SECRET_TEXT" ]; then
+  echo "No text received"
+  exit 0
+fi
+
+# Stash via a private one-shot file, not the clipboard: Alfred's own
+# selection-capture (Hotkey "Selection in macOS" / Universal Action) restores
+# the clipboard to its pre-selection value shortly after handing us the text,
+# which races with the user typing the item name and can overwrite SECRET_TEXT
+# before the iop keyword step reads it back.
+PENDING_FILE="$TMPDIR/alfred-1password-pending-secret"
+umask 077
+printf '%s' "$SECRET_TEXT" &gt; "$PENDING_FILE"
+
+# Also copy to clipboard for visibility/manual fallback; harmless if restored.
+printf '%s' "$SECRET_TEXT" | pbcopy
+
+osascript -e 'tell application id "com.runningwithcrayons.Alfred" to search "iop "'
+
+echo "Ready — type a name after iop and press Enter"</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>11</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>14AA4D33-79C7-4A48-8B95-2B8647178784</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>action</key>
+				<integer>0</integer>
+				<key>argument</key>
+				<integer>1</integer>
+				<key>focusedappvariable</key>
+				<false/>
+				<key>focusedappvariablename</key>
+				<string></string>
+				<key>hotkey</key>
+				<integer>8</integer>
+				<key>hotmod</key>
+				<integer>1310720</integer>
+				<key>hotstring</key>
+				<string>C</string>
+				<key>leftcursor</key>
+				<false/>
+				<key>modsmode</key>
+				<integer>0</integer>
+				<key>relatedAppsMode</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.hotkey</string>
+			<key>uid</key>
+			<string>BC665E28-E5EC-4B35-AE7A-12C8D0DCDEDF</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+TITLE="$1"
+
+if [ -z "$TITLE" ]; then
+  echo "Usage: iop &lt;item name&gt; (copy the secret first)"
+  exit 0
+fi
+
+PENDING_FILE="$TMPDIR/alfred-1password-pending-secret"
+SECRET_TEXT=""
+
+if [ -f "$PENDING_FILE" ]; then
+  # Only trust it for 2 minutes, so a stale forgotten run never gets reused.
+  age=$(( $(date +%s) - $(stat -f %m "$PENDING_FILE" 2&gt;/dev/null || echo 0) ))
+  if [ "$age" -le 120 ]; then
+    SECRET_TEXT="$(cat "$PENDING_FILE")"
+  fi
+  rm -f "$PENDING_FILE"
+fi
+
+if [ -z "$SECRET_TEXT" ]; then
+  SECRET_TEXT="$(pbpaste)"
+fi
+
+if [ -z "$SECRET_TEXT" ]; then
+  echo "Clipboard is empty — copy the secret first"
+  exit 0
+fi
+
+RESULT_JSON=$(op item create \
+  --category="API Credential" \
+  --title="$TITLE" \
+  "credential=$SECRET_TEXT" \
+  --format json &lt; /dev/null 2&gt;/dev/null)
+
+if [ $? -eq 0 ]; then
+  pbcopy &lt; /dev/null
+  DB_PATH="$HOME/Library/Application Support/Alfred/Databases/clipboard.alfdb"
+  if [ -f "$DB_PATH" ]; then
+    sqlite3 "$DB_PATH" "DELETE FROM clipboard WHERE item = '$(printf "%s" "$SECRET_TEXT" | sed "s/'/''/g")';"
+  fi
+
+  REF=$(printf '%s' "$RESULT_JSON" | jq -r '.fields[] | select(.id=="credential") | .reference')
+  printf '%s' "$REF" | pbcopy
+
+  echo "Saved as \"$TITLE\" — reference copied, wiped from Alfred"
+else
+  echo "Failed to save to 1Password"
+fi</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>11</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>8B763859-4D80-4A1F-B57D-B45A96400401</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>keyword</key>
+				<string>iop</string>
+				<key>subtext</key>
+				<string>Save clipboard to 1Password as an API Credential named {query}</string>
+				<key>text</key>
+				<string>iop {query}</string>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>72905DC5-48E4-4340-BBAA-34A5454012FC</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string>Search packages from hex</string>
+	<key>uidata</key>
+	<dict>
+		<key>14AA4D33-79C7-4A48-8B95-2B8647178784</key>
+		<dict>
+			<key>xpos</key>
+			<real>510</real>
+			<key>ypos</key>
+			<real>200</real>
+		</dict>
+		<key>254D6031-4013-410D-B57B-10A18B86441E</key>
+		<dict>
+			<key>xpos</key>
+			<real>205</real>
+			<key>ypos</key>
+			<real>45</real>
+		</dict>
+		<key>72905DC5-48E4-4340-BBAA-34A5454012FC</key>
+		<dict>
+			<key>xpos</key>
+			<real>200</real>
+			<key>ypos</key>
+			<real>470</real>
+		</dict>
+		<key>8B763859-4D80-4A1F-B57D-B45A96400401</key>
+		<dict>
+			<key>xpos</key>
+			<real>510</real>
+			<key>ypos</key>
+			<real>380</real>
+		</dict>
+		<key>BC665E28-E5EC-4B35-AE7A-12C8D0DCDEDF</key>
+		<dict>
+			<key>xpos</key>
+			<real>195</real>
+			<key>ypos</key>
+			<real>285</real>
+		</dict>
+		<key>C153D648-52A7-4728-92DA-A04F80214D2C</key>
+		<dict>
+			<key>xpos</key>
+			<real>200</real>
+			<key>ypos</key>
+			<real>155</real>
+		</dict>
+		<key>D65F2AA0-D75C-4795-A160-7235BDAC21BD</key>
+		<dict>
+			<key>xpos</key>
+			<real>740</real>
+			<key>ypos</key>
+			<real>185</real>
+		</dict>
+	</dict>
+	<key>userconfigurationconfig</key>
+	<array/>
+	<key>webaddress</key>
+	<string></string>
+</dict>
+</plist>
