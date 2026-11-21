@@ -1,5 +1,10 @@
 # iop — Save secrets to 1Password
 
+*I got tired of the manual dance every time I had to stash a secret: copy
+it, open 1Password, create the item by hand, remember to go back and clear
+it from my clipboard before I forgot and pasted it somewhere dumb. This
+workflow does all of that in one step.*
+
 ## Usage
 
 Save a copied secret (API key, token, password, etc.) to 1Password as an
