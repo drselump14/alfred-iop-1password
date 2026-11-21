@@ -1,55 +1,53 @@
-# iop — Save secrets to 1Password from Alfred
-
-Alfred workflow that saves a secret (API key, token, password, etc.) to 1Password
-as an **API Credential** item, without ever typing the secret into a text field
-or leaving it sitting in your clipboard history.
+# iop — Save secrets to 1Password
 
 ## Usage
 
-Copy a secret, then in Alfred:
+Save a copied secret (API key, token, password, etc.) to 1Password as an
+**API Credential** item via the `iop` keyword.
 
 ```
 iop my-service-key
 ```
 
-Press Enter. The workflow:
+Copy the secret first, then run `iop my-service-key` and press Enter. The
+workflow creates the item, wipes the secret from your clipboard and from
+Alfred's clipboard history, and copies the item's `op://` reference to your
+clipboard instead.
 
-1. Creates a 1Password item (category: **API Credential**) titled `my-service-key`
-   with the clipboard contents as the `credential` field
-2. Wipes the secret from your system clipboard and from Alfred's clipboard history
-3. Copies the item's `op://` reference to your clipboard instead
+Alternatively, with text selected in any app, trigger **Save to 1Password &
+Delete** via the Universal Action. The selection is handed to the same flow:
+Alfred opens pre-filled with `iop `, type the item name, and press Enter.
 
-## Other triggers
+Configure the Hotkey "Save to 1Password & Delete" to trigger the same action
+directly from a text selection, without opening the Universal Action menu.
 
-The same save logic is also wired to:
+## Setup
 
-- **Hotkey** (unassigned by default — set your own combo in the workflow):
-  grabs the current text **selection** directly (via macOS Accessibility,
-  no manual copy needed)
-- **Universal Action** ("Save to 1Password & Delete"): available from the
-  Services menu / Universal Actions on any selected text
-- **External Trigger** (`save_to_1password`): callable from other tools.
-  Example, from an AppleScript action in a PopClip-style text-selection
-  app (tested with [OpenClip](https://github.com/ganeshmshetty/openclip)):
+Install the [1Password CLI](https://developer.1password.com/docs/cli/get-started/)
+and [`jq`](https://jqlang.org/), then turn on the integration in 1Password:
+**1Password → Settings → Developer → Integrate with 1Password CLI**.
+
+By default the workflow looks for both on `PATH` at `/opt/homebrew/bin` or
+`/usr/local/bin` (Homebrew's Apple Silicon / Intel default locations). If
+yours live elsewhere, edit the `PATH` line in the workflow's two Run Script
+actions (Workflow → double-click either script box).
+
+## Other ways to trigger it
+
+- **External Trigger** (`save_to_1password`): callable from another
+  automation tool. Example, from an AppleScript action in a PopClip-style
+  text-selection app (tested with
+  [OpenClip](https://github.com/ganeshmshetty/openclip)):
 
   ```applescript
   tell application id "com.runningwithcrayons.Alfred" to run trigger "save_to_1password" in workflow "com.drselump14.import_clipboard_to_1password" with argument OPENCLIP_TEXT
   ```
 
-These three all feed selected/forwarded text through the **same** `iop` flow:
-the text is stashed in a private one-shot file (not the clipboard — Alfred's
-own selection-capture restores your original clipboard shortly after handing
-off the text, which races with you typing the item name), Alfred opens
-pre-filled with `iop `, and you type the name and press Enter exactly as above.
-
-## Requirements
-
-- [1Password CLI](https://developer.1password.com/docs/cli/) (`op`), signed in
-  and unlocked
-- [`jq`](https://jqlang.org/)
-- Both expected on `PATH` at `/opt/homebrew/bin` (Apple Silicon Homebrew
-  default) or `/usr/local/bin` — edit the `PATH` line in the scripts if yours
-  live elsewhere
+Selection-based triggers (Hotkey, Universal Action, External Trigger) all
+stash the handed-off text in a private one-shot file rather than the
+clipboard — Alfred's own selection capture restores your original clipboard
+shortly after handing off the text, which would otherwise race against you
+typing the item name.
 
 ## How it saves
 
@@ -58,11 +56,10 @@ op item create --category="API Credential" --title="$TITLE" "credential=$SECRET_
 ```
 
 The `credential` field is 1Password's standard concealed field for this
-category, so it displays masked in the 1Password app/browser extension until
-revealed.
+category, so it displays masked in the 1Password app and browser extension
+until revealed.
 
 ## Install
 
-Download the `.alfredworkflow` from [Releases](../../releases), or clone this
-repo and re-zip `info.plist` + `icon.png` as `<name>.alfredworkflow`, then
+Download the `.alfredworkflow` from [Releases](../../releases) and
 double-click to import into Alfred.
